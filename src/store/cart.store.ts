@@ -1,38 +1,32 @@
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch, AppThunk } from ".";
+import { Item, ItemAdd } from "../components/@types/item";
 
 //cria as actions de forma automaticas
-
-type item = {
-  id: number;
-  title: string;
-  description: string;
-  quantity: number;
-  price: number;
-  totalPrice: number;
-};
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [] as item[],
+    items: [] as Item[],
     totalQuantity: 0,
     totalAmount: 0,
   },
   reducers: {
     //reducer com o payload
-    addItemToCart(state, action) {
-      const newItemToAddACart: item = action.payload;
+    addItemToCart(state, action: PayloadAction<ItemAdd>) {
+      const newItemToAddACart: ItemAdd = action.payload;
       //No exemplo preciso verificar se ja existe o item, caso sim ele vai acrescentar.
       const existingItem = state.items.find(
         (item) => item.id === newItemToAddACart.id
       );
-
+      state.totalQuantity++;
       if (!existingItem) {
         //Formatar os dados aqui antes de colocar dentro do array.
+
         const newItem = {
           ...newItemToAddACart,
           quantity: 1,
+          totalPrice: 10,
         };
         state.items.push({
           ...newItem,
@@ -44,9 +38,10 @@ const cartSlice = createSlice({
           existingItem.totalPrice + newItemToAddACart.price;
       }
     },
-    removeItemFromCart(state, action) {
+    removeItemFromCart(state, action: PayloadAction<string>) {
       const idItem = action.payload;
       const existingItem = state.items.find((item) => item.id === idItem);
+      state.totalQuantity--;
       if (existingItem) {
         if (existingItem.quantity === 1) {
           state.items = state.items.filter((item) => item.id !== idItem);
