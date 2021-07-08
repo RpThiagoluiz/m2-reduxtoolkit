@@ -1,26 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
+import { Cart } from "./components/Cart";
+import { Layout } from "./components/Layout";
+import { Products } from "./components/Shop/Products";
 
-function App() {
+export const App = () => {
+  //pegar o estado atual do cart.
+  const toggleCart = useSelector((state: RootState) => state.ui.cartIsVisible);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      {toggleCart && <Cart />}
+      <Products />
+    </Layout>
   );
-}
-
-export default App;
+};
