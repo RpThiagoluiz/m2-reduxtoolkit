@@ -9,6 +9,7 @@ export const CartButton = () => {
   const totalQuantity = useSelector(
     (state: RootState) => state.cart.totalQuantity
   );
+  const totalAmount = useSelector((state: RootState) => state.cart.totalAmount);
 
   const handleToggleCart = () => {
     dispatch(toggleReduxAction());

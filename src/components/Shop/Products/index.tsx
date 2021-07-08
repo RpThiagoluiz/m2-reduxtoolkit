@@ -29,7 +29,7 @@ export const Products = () => {
       <h2>Buy your favorite products</h2>
       <ul>
         {DUMMY_PRODUCT.map((product) => (
-          <ProductItem item={product} />
+          <ProductItem key={product.id} item={product} />
         ))}
       </ul>
     </section>

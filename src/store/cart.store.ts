@@ -26,14 +26,14 @@ const cartSlice = createSlice({
         const newItem = {
           ...newItemToAddACart,
           quantity: 1,
-          totalPrice: 10,
+          totalPrice: newItemToAddACart.price,
         };
         state.items.push({
           ...newItem,
         });
       } else {
-        // existingItem.quantity ++
-        existingItem.quantity += 1;
+        existingItem.quantity++;
+        //existingItem.quantity += 1;
         existingItem.totalPrice =
           existingItem.totalPrice + newItemToAddACart.price;
       }
@@ -41,25 +41,29 @@ const cartSlice = createSlice({
     removeItemFromCart(state, action: PayloadAction<string>) {
       const idItem = action.payload;
       const existingItem = state.items.find((item) => item.id === idItem);
+
       state.totalQuantity--;
       if (existingItem) {
         if (existingItem.quantity === 1) {
           state.items = state.items.filter((item) => item.id !== idItem);
         } else {
           existingItem.quantity -= 1;
+          existingItem.totalPrice =
+            existingItem.totalPrice - existingItem.price;
         }
       }
     },
   },
 });
+
 //as acoes sao criadas automaticamentes
 export const { addItemToCart, removeItemFromCart } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
 
 //Function Sleep somente para demontrar como um delay de request
-const sleep = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+// const sleep = (ms: number) => {
+//   return new Promise((resolve) => setTimeout(resolve, ms));
+// };
 
 //async no toolkit - async nao vai na function, o toolkit que transforma ele em async - a funcao dentro dela que sera async
 //lembra que todo thunk é uma acao async
